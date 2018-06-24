@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get -y install libdb4.8-dev libdb4.8++-dev unzip \
     && apt-get -y install wget libzmq5 libminiupnpc10
 	
-ENV WALLET_URL=https://github.com/mceme/ImgCash/releases/download/1.0.6/imgcash_linux_86_64.tar.xz
+ENV WALLET_URL=https://github.com/mceme/ImgCash/releases/download/1.0.6/imgcash_linux86_64.tar.xz
 
 RUN wget $WALLET_URL -O /tmp/wallet.tar.gz \
 	&& cd /usr/local/bin \

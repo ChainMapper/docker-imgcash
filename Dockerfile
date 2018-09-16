@@ -1,10 +1,21 @@
-FROM chainmapper/walletbase-bionic
-	
-ENV WALLET_URL=https://github.com/mceme/ImageCash/releases/download/1.0.7/imgcash_linux86_64.tar.xz
+FROM chainmapper/walletbase-bionic-build as builder
 
-RUN wget $WALLET_URL -O /tmp/wallet.tar.gz \
-	&& cd /usr/local/bin \
-	&& tar xvf /tmp/wallet.tar.gz
+ENV GIT_COIN_URL    https://github.com/mceme/ImageCash.git
+ENV GIT_COIN_NAME   imagecash   
+
+RUN	git clone $GIT_COIN_URL $GIT_COIN_NAME \
+	&& cd $GIT_COIN_NAME \
+	&& git checkout tags/1.0.8 \
+	&& chmod +x autogen.sh \
+	&& chmod +x share/genbuild.sh \
+	&& chmod +x src/leveldb/build_detect_platform \
+	&& ./autogen.sh && ./configure \
+	&& make \
+	&& make install
+
+FROM chainmapper/walletbase-bionic as runtime
+
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 RUN mkdir /data
 ENV HOME /data

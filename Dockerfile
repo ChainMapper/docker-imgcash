@@ -4,13 +4,13 @@ ENV WALLET_URL=https://github.com/mceme/ImageCash/releases/download/1.0.7/imgcas
 
 RUN wget $WALLET_URL -O /tmp/wallet.tar.gz \
 	&& cd /usr/local/bin \
-	&& tar xvf /tmp/wallet.tar.gz \
-	&& mkdir -p /data/.imgcashcore
+	&& tar xvf /tmp/wallet.tar.gz
+
+RUN mkdir /data
+ENV HOME /data
 
 #rpc port & main port
-EXPOSE 6898 6888
-
-ENV HOME /data
+EXPOSE 6666 6888
 
 COPY start.sh /start.sh
 COPY gen_config.sh /gen_config.sh
